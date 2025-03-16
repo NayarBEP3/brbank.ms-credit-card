@@ -2,12 +2,11 @@ package com.brbank.ms_credit_card.infrastructure.controller;
 
 import com.brbank.ms_credit_card.application.handler.CreditCardHandler;
 import com.brbank.ms_credit_card.infrastructure.dto.request.CreateCreditCardRequest;
-import com.brbank.ms_credit_card.infrastructure.dto.response.CreateCreditCardResponse;
+import com.brbank.ms_credit_card.infrastructure.dto.response.CreditCardResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1")
@@ -17,7 +16,12 @@ public class CreditCardController {
     private final CreditCardHandler creditCardHandler;
 
     @PostMapping("/credit-card")
-    public CreateCreditCardResponse createCreditCard(@RequestBody final CreateCreditCardRequest request) {
+    public CreditCardResponse createCreditCard(@RequestBody final CreateCreditCardRequest request) {
         return creditCardHandler.createCreditCard(request);
+    }
+
+    @GetMapping("/credit-card")
+    public List<CreditCardResponse> getAllCreditCards() {
+        return creditCardHandler.getAllCreditCards();
     }
 }

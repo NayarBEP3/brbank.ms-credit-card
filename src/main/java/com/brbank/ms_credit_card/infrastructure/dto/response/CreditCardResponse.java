@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreateCreditCardResponse {
+public class CreditCardResponse {
     private long creditCardId;
     private String creditCardNumber;
     private String monthValidThru;
