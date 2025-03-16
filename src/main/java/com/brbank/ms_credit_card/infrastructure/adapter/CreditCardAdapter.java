@@ -1,15 +1,17 @@
 package com.brbank.ms_credit_card.infrastructure.adapter;
 
-import com.brbank.ms_credit_card.domain.port.CreateCreditCardUseCase;
+import com.brbank.ms_credit_card.domain.port.CreditCardUseCases;
 import com.brbank.ms_credit_card.domain.model.CreditCardModel;
 import com.brbank.ms_credit_card.application.mapper.CreditCardMapper;
 import com.brbank.ms_credit_card.infrastructure.persistance.repository.CreditCardJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
 @RequiredArgsConstructor
-public class CreditCardAdapter implements CreateCreditCardUseCase {
+public class CreditCardAdapter implements CreditCardUseCases {
 
     private final CreditCardJpaRepository creditCardJpaRepository;
 
@@ -18,6 +20,15 @@ public class CreditCardAdapter implements CreateCreditCardUseCase {
         var creditCardEntity = CreditCardMapper.INSTANCE.fromModelToEntity(creditCardModel);
         creditCardEntity = this.creditCardJpaRepository.save(creditCardEntity);
         return CreditCardMapper.INSTANCE.fromEntityToModel(creditCardEntity);
+    }
+
+    @Override
+    public List<CreditCardModel> getAllCreditCards() {
+        final var creditCardEntityList = this.creditCardJpaRepository.findAll();
+        if (!creditCardEntityList.isEmpty()) {
+            return CreditCardMapper.INSTANCE.fromEntityListToModelList(creditCardEntityList);
+        }
+        return List.of();
     }
 
 }

@@ -10,6 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.mockito.*;
 
+import java.util.List;
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class CreditCardAdapterTest {
 
@@ -49,5 +51,36 @@ class CreditCardAdapterTest {
         Assertions.assertEquals("Brayan Estrada", response.getHolderName());
         Assertions.assertEquals("12", response.getMonthValidThru());
         Assertions.assertEquals("27", response.getYearValidThru());
+    }
+
+    @Test
+    void getAllCreditCardsOk() {
+        final var creditCardEntity = new CreditCardEntity();
+        creditCardEntity.setCreditCardId(1L);
+        creditCardEntity.setCreditCardCvc("123");
+        creditCardEntity.setCreditCardNumber("123321");
+        creditCardEntity.setHolderName("Brayan Estrada");
+        creditCardEntity.setMonthValidThru("12");
+        creditCardEntity.setYearValidThru("27");
+        Mockito.when(this.creditCardJpaRepository.findAll()).thenReturn(List.of(creditCardEntity));
+
+        final var response = this.creditCardAdapter.getAllCreditCards();
+
+        Assertions.assertEquals(1, response.size());
+        Assertions.assertEquals(1L, response.getFirst().getCreditCardId());
+        Assertions.assertEquals("123", response.getFirst().getCreditCardCvc());
+        Assertions.assertEquals("123321", response.getFirst().getCreditCardNumber());
+        Assertions.assertEquals("Brayan Estrada", response.getFirst().getHolderName());
+        Assertions.assertEquals("12", response.getFirst().getMonthValidThru());
+        Assertions.assertEquals("27", response.getFirst().getYearValidThru());
+    }
+
+    @Test
+    void emptyCreditCardList() {
+        Mockito.when(this.creditCardJpaRepository.findAll()).thenReturn(List.of());
+
+        final var response = this.creditCardAdapter.getAllCreditCards();
+
+        Assertions.assertEquals(0, response.size());
     }
 }
