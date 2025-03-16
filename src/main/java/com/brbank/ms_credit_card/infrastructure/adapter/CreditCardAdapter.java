@@ -1,5 +1,7 @@
 package com.brbank.ms_credit_card.infrastructure.adapter;
 
+import com.brbank.ms_credit_card.domain.enums.CreditCardStatusEnum;
+import com.brbank.ms_credit_card.domain.exception.NotFoundException;
 import com.brbank.ms_credit_card.domain.port.CreditCardUseCases;
 import com.brbank.ms_credit_card.domain.model.CreditCardModel;
 import com.brbank.ms_credit_card.application.mapper.CreditCardMapper;
@@ -29,6 +31,16 @@ public class CreditCardAdapter implements CreditCardUseCases {
             return CreditCardMapper.INSTANCE.fromEntityListToModelList(creditCardEntityList);
         }
         return List.of();
+    }
+
+    @Override
+    public CreditCardModel changeCreditCardStatus(final String creditCardNumber, final CreditCardStatusEnum creditCardStatus) {
+        var creditCardEntity = this.creditCardJpaRepository.findByCreditCardNumber(creditCardNumber)
+                .orElseThrow(() -> new NotFoundException("Credit card not found"));
+        creditCardEntity.setCreditCardStatus(creditCardStatus);
+        creditCardEntity = this.creditCardJpaRepository.save(creditCardEntity);
+        return CreditCardMapper.INSTANCE.fromEntityToModel(creditCardEntity);
+
     }
 
 }

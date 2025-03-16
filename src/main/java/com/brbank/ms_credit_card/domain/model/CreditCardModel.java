@@ -1,5 +1,7 @@
 package com.brbank.ms_credit_card.domain.model;
 
+import com.brbank.ms_credit_card.domain.enums.CreditCardStatusEnum;
+
 public class CreditCardModel {
 
     private long creditCardId;
@@ -8,6 +10,7 @@ public class CreditCardModel {
     private String yearValidThru;
     private String creditCardCvc;
     private String holderName;
+    private CreditCardStatusEnum creditCardStatus;
 
     public CreditCardModel() {
     }
@@ -58,5 +61,13 @@ public class CreditCardModel {
 
     public void setHolderName(String holderName) {
         this.holderName = holderName;
+    }
+
+    public CreditCardStatusEnum getCreditCardStatus() {
+        return creditCardStatus;
+    }
+
+    public void setCreditCardStatus(CreditCardStatusEnum creditCardStatus) {
+        this.creditCardStatus = creditCardStatus;
     }
 }

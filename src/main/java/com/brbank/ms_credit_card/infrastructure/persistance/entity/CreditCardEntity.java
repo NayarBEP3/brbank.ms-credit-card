@@ -1,5 +1,6 @@
 package com.brbank.ms_credit_card.infrastructure.persistance.entity;
 
+import com.brbank.ms_credit_card.domain.enums.CreditCardStatusEnum;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,4 +22,5 @@ public class CreditCardEntity {
     private String yearValidThru;
     private String creditCardCvc;
     private String holderName;
+    private CreditCardStatusEnum creditCardStatus;
 }
