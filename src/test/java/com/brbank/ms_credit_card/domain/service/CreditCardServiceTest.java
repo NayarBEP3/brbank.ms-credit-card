@@ -1,5 +1,6 @@
 package com.brbank.ms_credit_card.domain.service;
 
+import com.brbank.ms_credit_card.domain.enums.CreditCardStatusEnum;
 import com.brbank.ms_credit_card.domain.model.CreditCardModel;
 import com.brbank.ms_credit_card.domain.port.CreditCardUseCases;
 import org.junit.jupiter.api.Assertions;
@@ -63,5 +64,27 @@ class CreditCardServiceTest {
         Assertions.assertEquals("Brayan Estrada", response.getFirst().getHolderName());
         Assertions.assertEquals("12", response.getFirst().getMonthValidThru());
         Assertions.assertEquals("27", response.getFirst().getYearValidThru());
+    }
+
+    @Test
+    void changeCreditCardStatusOK() {
+        final var creditCardModelResponse = new CreditCardModel();
+        creditCardModelResponse.setCreditCardId(1L);
+        creditCardModelResponse.setCreditCardCvc("123");
+        creditCardModelResponse.setCreditCardNumber("123321");
+        creditCardModelResponse.setHolderName("Brayan Estrada");
+        creditCardModelResponse.setMonthValidThru("12");
+        creditCardModelResponse.setYearValidThru("27");
+        Mockito.when(this.creditCardUseCases.changeCreditCardStatus(ArgumentMatchers.anyString(), ArgumentMatchers.any(CreditCardStatusEnum.class)))
+                .thenReturn(creditCardModelResponse);
+
+        final var response = this.creditCardService.changeCreditCardStatus("123321", "ALLOWED");
+
+        Assertions.assertEquals(1L, response.getCreditCardId());
+        Assertions.assertEquals("123", response.getCreditCardCvc());
+        Assertions.assertEquals("123321", response.getCreditCardNumber());
+        Assertions.assertEquals("Brayan Estrada", response.getHolderName());
+        Assertions.assertEquals("12", response.getMonthValidThru());
+        Assertions.assertEquals("27", response.getYearValidThru());
     }
 }
