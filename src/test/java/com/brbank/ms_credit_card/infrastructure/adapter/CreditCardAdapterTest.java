@@ -126,4 +126,27 @@ class CreditCardAdapterTest {
 
         Assertions.assertThrows(NotFoundException.class, () -> this.creditCardAdapter.changeCreditCardStatus("123321", CreditCardStatusEnum.ALLOWED));
     }
+
+    @Test
+    void validateCreditCardOk() {
+        final var creditCardEntity = new CreditCardEntity();
+        creditCardEntity.setCreditCardId(1L);
+        creditCardEntity.setCreditCardCvc("123");
+        creditCardEntity.setCreditCardNumber("123321");
+        creditCardEntity.setHolderName("Brayan Estrada");
+        creditCardEntity.setMonthValidThru("12");
+        creditCardEntity.setYearValidThru("27");
+        creditCardEntity.setCreditCardStatus(CreditCardStatusEnum.CANCELLED);
+        Mockito.when(this.creditCardJpaRepository.findByCreditCardNumber(ArgumentMatchers.anyString())).thenReturn(Optional.of(creditCardEntity));
+
+        final var response = this.creditCardAdapter.validateCreditCard("123321");
+
+        Assertions.assertEquals(1L, response.getCreditCardId());
+        Assertions.assertEquals("123", response.getCreditCardCvc());
+        Assertions.assertEquals("123321", response.getCreditCardNumber());
+        Assertions.assertEquals("Brayan Estrada", response.getHolderName());
+        Assertions.assertEquals("12", response.getMonthValidThru());
+        Assertions.assertEquals("27", response.getYearValidThru());
+        Assertions.assertEquals(CreditCardStatusEnum.CANCELLED, response.getCreditCardStatus());
+    }
 }

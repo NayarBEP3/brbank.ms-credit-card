@@ -5,6 +5,7 @@ import com.brbank.ms_credit_card.domain.model.CreditCardModel;
 import com.brbank.ms_credit_card.domain.service.CreditCardService;
 import com.brbank.ms_credit_card.infrastructure.dto.request.ChangeCreditCardStatusRequest;
 import com.brbank.ms_credit_card.infrastructure.dto.request.CreateCreditCardRequest;
+import com.brbank.ms_credit_card.infrastructure.dto.request.ValidateCreditCardRequest;
 import org.junit.jupiter.api.*;
 import org.mockito.Mock;
 import org.mockito.InjectMocks;
@@ -99,6 +100,16 @@ class CreditCardHandlerTest {
         Assertions.assertEquals("12", response.getMonthValidThru());
         Assertions.assertEquals("27", response.getYearValidThru());
         Assertions.assertEquals(CreditCardStatusEnum.ALLOWED, response.getCreditCardStatus());
+    }
+
+    @Test
+    void validateCreditCard() {
+        final var validateCreditCardRequest = new ValidateCreditCardRequest();
+        Mockito.when(this.creditCardService.validateCreditCard(ArgumentMatchers.any())).thenReturn(true);
+
+        final var response = this.creditCardHandler.validateCreditCard(validateCreditCardRequest);
+
+        Assertions.assertTrue(response);
     }
 
 }

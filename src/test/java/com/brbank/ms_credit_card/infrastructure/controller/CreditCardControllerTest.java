@@ -4,6 +4,7 @@ import com.brbank.ms_credit_card.application.handler.CreditCardHandler;
 import com.brbank.ms_credit_card.domain.enums.CreditCardStatusEnum;
 import com.brbank.ms_credit_card.infrastructure.dto.request.ChangeCreditCardStatusRequest;
 import com.brbank.ms_credit_card.infrastructure.dto.request.CreateCreditCardRequest;
+import com.brbank.ms_credit_card.infrastructure.dto.request.ValidateCreditCardRequest;
 import com.brbank.ms_credit_card.infrastructure.dto.response.CreditCardResponse;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -101,6 +102,16 @@ class CreditCardControllerTest {
         Assertions.assertEquals("12", response.getMonthValidThru());
         Assertions.assertEquals("27", response.getYearValidThru());
         Assertions.assertEquals(CreditCardStatusEnum.BLOCKED, response.getCreditCardStatus());
+    }
 
+    @Test
+    void validateCreditCardOK() {
+        final var validateCreditCardRequest = new ValidateCreditCardRequest();
+        Mockito.when(this.creditCardHandler.validateCreditCard(ArgumentMatchers.any(ValidateCreditCardRequest.class)))
+                .thenReturn(true);
+
+        final var response = this.creditCardController.validateCreditCard(validateCreditCardRequest);
+
+        Assertions.assertTrue(response);
     }
 }

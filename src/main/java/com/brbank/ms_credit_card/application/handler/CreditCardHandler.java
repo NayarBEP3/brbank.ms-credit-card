@@ -4,6 +4,7 @@ import com.brbank.ms_credit_card.application.mapper.CreditCardMapper;
 import com.brbank.ms_credit_card.domain.service.CreditCardService;
 import com.brbank.ms_credit_card.infrastructure.dto.request.ChangeCreditCardStatusRequest;
 import com.brbank.ms_credit_card.infrastructure.dto.request.CreateCreditCardRequest;
+import com.brbank.ms_credit_card.infrastructure.dto.request.ValidateCreditCardRequest;
 import com.brbank.ms_credit_card.infrastructure.dto.response.CreditCardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -31,5 +32,10 @@ public class CreditCardHandler {
         final var response = this.creditCardService.changeCreditCardStatus(changeCreditCardStatusRequest.getCreditCardNumber(),
                 changeCreditCardStatusRequest.getCreditCardStatus());
         return CreditCardMapper.INSTANCE.fromModelToResponse(response);
+    }
+
+    public boolean validateCreditCard(final ValidateCreditCardRequest validateCreditCardRequest) {
+        final var creditCardModel = CreditCardMapper.INSTANCE.fromValidateRequestToModel(validateCreditCardRequest);
+        return this.creditCardService.validateCreditCard(creditCardModel);
     }
 }

@@ -5,6 +5,7 @@ import com.brbank.ms_credit_card.domain.exception.NotFoundException;
 import com.brbank.ms_credit_card.domain.port.CreditCardUseCases;
 import com.brbank.ms_credit_card.domain.model.CreditCardModel;
 import com.brbank.ms_credit_card.application.mapper.CreditCardMapper;
+import com.brbank.ms_credit_card.infrastructure.persistance.entity.CreditCardEntity;
 import com.brbank.ms_credit_card.infrastructure.persistance.repository.CreditCardJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -41,6 +42,13 @@ public class CreditCardAdapter implements CreditCardUseCases {
         creditCardEntity = this.creditCardJpaRepository.save(creditCardEntity);
         return CreditCardMapper.INSTANCE.fromEntityToModel(creditCardEntity);
 
+    }
+
+    @Override
+    public CreditCardModel validateCreditCard(final String creditCardNumber) {
+        final var creditCardEntity = this.creditCardJpaRepository.findByCreditCardNumber(creditCardNumber)
+                   .orElseThrow(() -> new NotFoundException("Credit card not found"));
+        return CreditCardMapper.INSTANCE.fromEntityToModel(creditCardEntity);
     }
 
 }
