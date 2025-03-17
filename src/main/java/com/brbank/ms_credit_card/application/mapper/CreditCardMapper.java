@@ -3,6 +3,7 @@ package com.brbank.ms_credit_card.application.mapper;
 import com.brbank.ms_credit_card.domain.model.CreditCardModel;
 import com.brbank.ms_credit_card.infrastructure.dto.request.ChangeCreditCardStatusRequest;
 import com.brbank.ms_credit_card.infrastructure.dto.request.CreateCreditCardRequest;
+import com.brbank.ms_credit_card.infrastructure.dto.request.ValidateCreditCardRequest;
 import com.brbank.ms_credit_card.infrastructure.dto.response.CreditCardResponse;
 import com.brbank.ms_credit_card.infrastructure.persistance.entity.CreditCardEntity;
 import org.mapstruct.Mapper;
@@ -18,8 +19,7 @@ public interface CreditCardMapper {
 
     /* Objects. */
     CreditCardModel fromCreateRequestToModel(CreateCreditCardRequest createCreditCardRequest);
-    @Mapping(target = "creditCardStatus", ignore = true)
-    CreditCardModel fromChangeRequestToModel(ChangeCreditCardStatusRequest changeCreditCardStatusRequest);
+    CreditCardModel fromValidateRequestToModel(ValidateCreditCardRequest validateCreditCardRequest);
     CreditCardEntity fromModelToEntity(CreditCardModel creditCardModel);
     CreditCardModel fromEntityToModel(CreditCardEntity creditCardEntity);
     CreditCardResponse fromModelToResponse(CreditCardModel creditCardModel);

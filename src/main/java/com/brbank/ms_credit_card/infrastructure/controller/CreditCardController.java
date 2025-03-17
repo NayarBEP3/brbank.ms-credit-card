@@ -3,6 +3,7 @@ package com.brbank.ms_credit_card.infrastructure.controller;
 import com.brbank.ms_credit_card.application.handler.CreditCardHandler;
 import com.brbank.ms_credit_card.infrastructure.dto.request.ChangeCreditCardStatusRequest;
 import com.brbank.ms_credit_card.infrastructure.dto.request.CreateCreditCardRequest;
+import com.brbank.ms_credit_card.infrastructure.dto.request.ValidateCreditCardRequest;
 import com.brbank.ms_credit_card.infrastructure.dto.response.CreditCardResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -29,5 +30,10 @@ public class CreditCardController {
     @PutMapping("/credit-card/status")
     public CreditCardResponse changeCreditCardStatus(@RequestBody final ChangeCreditCardStatusRequest changeCreditCardStatusRequest) {
         return creditCardHandler.changeCreditCardStatus(changeCreditCardStatusRequest);
+    }
+
+    @PostMapping("/credit-card/validate")
+    public boolean validateCreditCard(@RequestBody final ValidateCreditCardRequest request) {
+        return creditCardHandler.validateCreditCard(request);
     }
 }

@@ -10,5 +10,6 @@ public interface CreditCardUseCases {
     CreditCardModel createCreditCard(final CreditCardModel creditCardModel);
     List<CreditCardModel> getAllCreditCards();
     CreditCardModel changeCreditCardStatus(final String creditCardNumber, final CreditCardStatusEnum creditCardStatus);
+    CreditCardModel validateCreditCard(final String creditCardNumber);
 
 }

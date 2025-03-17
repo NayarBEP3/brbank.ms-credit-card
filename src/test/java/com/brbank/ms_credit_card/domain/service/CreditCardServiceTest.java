@@ -87,4 +87,129 @@ class CreditCardServiceTest {
         Assertions.assertEquals("12", response.getMonthValidThru());
         Assertions.assertEquals("27", response.getYearValidThru());
     }
+
+    @Test
+    void validateCreditCardOK() {
+        final var creditCardModel = new CreditCardModel();
+        creditCardModel.setCreditCardCvc("123");
+        creditCardModel.setCreditCardNumber("123321");
+        creditCardModel.setHolderName("Brayan Estrada");
+        creditCardModel.setMonthValidThru("12");
+        creditCardModel.setYearValidThru("27");
+        creditCardModel.setCreditCardStatus(CreditCardStatusEnum.ALLOWED);
+        Mockito.when(this.creditCardUseCases.validateCreditCard(ArgumentMatchers.any())).thenReturn(creditCardModel);
+
+        final var response = this.creditCardService.validateCreditCard(creditCardModel);
+
+        Assertions.assertTrue(response);
+    }
+
+    @Test
+    void validateCreditCardStatusBlockedNOK() {
+        final var creditCardModel = new CreditCardModel();
+        creditCardModel.setCreditCardId(1L);
+        creditCardModel.setCreditCardCvc("123");
+        creditCardModel.setCreditCardNumber("123321");
+        creditCardModel.setHolderName("Brayan Estrada");
+        creditCardModel.setMonthValidThru("12");
+        creditCardModel.setYearValidThru("27");
+        creditCardModel.setCreditCardStatus(CreditCardStatusEnum.BLOCKED);
+        Mockito.when(this.creditCardUseCases.validateCreditCard(ArgumentMatchers.any())).thenReturn(creditCardModel);
+
+        final var response = this.creditCardService.validateCreditCard(creditCardModel);
+
+        Assertions.assertFalse(response);
+    }
+
+    @Test
+    void validateCreditCardDifferentHolderNameNOK() {
+        final var creditCardModel = new CreditCardModel();
+        creditCardModel.setCreditCardCvc("123");
+        creditCardModel.setCreditCardNumber("123321");
+        creditCardModel.setHolderName("Brayan Estrada");
+        creditCardModel.setMonthValidThru("12");
+        creditCardModel.setYearValidThru("27");
+        creditCardModel.setCreditCardStatus(CreditCardStatusEnum.ALLOWED);
+        final var creditCardExpected = new CreditCardModel();
+        creditCardExpected.setCreditCardCvc("123");
+        creditCardExpected.setCreditCardNumber("123321");
+        creditCardExpected.setHolderName("Brayan Estrad");
+        creditCardExpected.setMonthValidThru("12");
+        creditCardExpected.setYearValidThru("27");
+        creditCardExpected.setCreditCardStatus(CreditCardStatusEnum.ALLOWED);
+        Mockito.when(this.creditCardUseCases.validateCreditCard(ArgumentMatchers.any())).thenReturn(creditCardExpected);
+
+        final var response = this.creditCardService.validateCreditCard(creditCardModel);
+
+        Assertions.assertFalse(response);
+    }
+
+    @Test
+    void validateCreditCardDifferentMonthNOK() {
+        final var creditCardModel = new CreditCardModel();
+        creditCardModel.setCreditCardCvc("123");
+        creditCardModel.setCreditCardNumber("123321");
+        creditCardModel.setHolderName("Brayan Estrada");
+        creditCardModel.setMonthValidThru("12");
+        creditCardModel.setYearValidThru("27");
+        creditCardModel.setCreditCardStatus(CreditCardStatusEnum.ALLOWED);
+        final var creditCardExpected = new CreditCardModel();
+        creditCardExpected.setCreditCardCvc("123");
+        creditCardExpected.setCreditCardNumber("123321");
+        creditCardExpected.setHolderName("Brayan Estrada");
+        creditCardExpected.setMonthValidThru("11");
+        creditCardExpected.setYearValidThru("27");
+        creditCardExpected.setCreditCardStatus(CreditCardStatusEnum.ALLOWED);
+        Mockito.when(this.creditCardUseCases.validateCreditCard(ArgumentMatchers.any())).thenReturn(creditCardExpected);
+
+        final var response = this.creditCardService.validateCreditCard(creditCardModel);
+
+        Assertions.assertFalse(response);
+    }
+
+    @Test
+    void validateCreditCardDifferentYearNOK() {
+        final var creditCardModel = new CreditCardModel();
+        creditCardModel.setCreditCardCvc("123");
+        creditCardModel.setCreditCardNumber("123321");
+        creditCardModel.setHolderName("Brayan Estrada");
+        creditCardModel.setMonthValidThru("12");
+        creditCardModel.setYearValidThru("27");
+        creditCardModel.setCreditCardStatus(CreditCardStatusEnum.ALLOWED);
+        final var creditCardExpected = new CreditCardModel();
+        creditCardExpected.setCreditCardCvc("123");
+        creditCardExpected.setCreditCardNumber("123321");
+        creditCardExpected.setHolderName("Brayan Estrada");
+        creditCardExpected.setMonthValidThru("12");
+        creditCardExpected.setYearValidThru("28");
+        creditCardExpected.setCreditCardStatus(CreditCardStatusEnum.ALLOWED);
+        Mockito.when(this.creditCardUseCases.validateCreditCard(ArgumentMatchers.any())).thenReturn(creditCardExpected);
+
+        final var response = this.creditCardService.validateCreditCard(creditCardModel);
+
+        Assertions.assertFalse(response);
+    }
+
+    @Test
+    void validateCreditCardDifferentCVCNOK() {
+        final var creditCardModel = new CreditCardModel();
+        creditCardModel.setCreditCardCvc("123");
+        creditCardModel.setCreditCardNumber("123321");
+        creditCardModel.setHolderName("Brayan Estrada");
+        creditCardModel.setMonthValidThru("12");
+        creditCardModel.setYearValidThru("27");
+        creditCardModel.setCreditCardStatus(CreditCardStatusEnum.ALLOWED);
+        final var creditCardExpected = new CreditCardModel();
+        creditCardExpected.setCreditCardCvc("124");
+        creditCardExpected.setCreditCardNumber("123321");
+        creditCardExpected.setHolderName("Brayan Estrada");
+        creditCardExpected.setMonthValidThru("12");
+        creditCardExpected.setYearValidThru("27");
+        creditCardExpected.setCreditCardStatus(CreditCardStatusEnum.ALLOWED);
+        Mockito.when(this.creditCardUseCases.validateCreditCard(ArgumentMatchers.any())).thenReturn(creditCardExpected);
+
+        final var response = this.creditCardService.validateCreditCard(creditCardModel);
+
+        Assertions.assertFalse(response);
+    }
 }
